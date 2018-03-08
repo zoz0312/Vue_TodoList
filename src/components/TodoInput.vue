@@ -4,14 +4,26 @@
     <span class="add-container" v-on:click="addTodo">
       <i class="add-btn fa fa-plus" aria-hidden="ture"></i>
     </span>
+
+    <modal v-if="showModal" @close="showModal=false">
+      <h3 slot="header">Alert!</h3>
+      <span slot="footer" @click="showModal=false">
+        Please write to do!
+        <i class="closeModalBtn fa fa-times" aria-hidden="true"></i>
+      </span>
+    </modal>
   </div>
 </template>
 
 <script>
+import Modal from './common/Modal.vue';
+
 export default{
+  props: ['propsdata'],
   data(){
     return {
       newTodoItem: '',
+      showModal: false,
     }
   },
   methods: {
@@ -20,11 +32,16 @@ export default{
         var value = this.newTodoItem && this.newTodoItem.trim();
         this.$emit('addTodo', value);
         this.clearInput();
+      } else {
+        this.showModal = !this.showModal;
       }
     },
     clearInput(){
       this.newTodoItem = '';
     }
+  },
+  components: {
+    Modal: Modal
   }
 }
 </script>
